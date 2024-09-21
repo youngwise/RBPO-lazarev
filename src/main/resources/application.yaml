@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: lazarev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/data
+    username: ${JDBC_USERNAME}
+    password: ${JDBC_PASSWORD}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
