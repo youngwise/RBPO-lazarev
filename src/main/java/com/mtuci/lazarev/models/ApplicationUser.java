@@ -6,23 +6,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class ApplicationUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
     @Column(unique = true)
-    private String login;
+    private String username;
 
     private String password;
+    private String email;
 
     @OneToOne
     @MapsId
     private Licence licence;
+
+    @Enumerated(EnumType.STRING)
+    private ApplicationRole role;
 }

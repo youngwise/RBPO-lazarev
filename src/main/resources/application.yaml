@@ -9,3 +9,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+
+jwt:
+  secret: LazarevSergeyAleksandro1BIB22141
+  expiration: 3600000

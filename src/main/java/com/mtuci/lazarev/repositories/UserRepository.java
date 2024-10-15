@@ -1,8 +1,11 @@
 package com.mtuci.lazarev.repositories;
 
-import com.mtuci.lazarev.models.User;
+import com.mtuci.lazarev.models.ApplicationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
+import java.util.UUID;
 
+public interface UserRepository extends JpaRepository<ApplicationUser, UUID> {
+    Optional<ApplicationUser> findByEmail(String email);
 }

@@ -1,12 +1,25 @@
 package com.mtuci.lazarev.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.mtuci.lazarev.models.Main;
+import com.mtuci.lazarev.service.MainService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
+@RequestMapping("/main")
 public class MainController {
-    @GetMapping("/")
-    public String start() {
-        return "Hello world!";
+    private final MainService mainService;
+
+    public MainController(MainService mainService) { this.mainService = mainService; }
+
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('read')")
+    public List<Main> findAll() {
+        return mainService.findAll();
     }
+
+    @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('modification')")
+    public void save(@RequestBody Main main) { mainService.save(main); }
 }

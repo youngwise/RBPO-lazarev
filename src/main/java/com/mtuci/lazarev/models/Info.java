@@ -6,18 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
+import java.util.List;
 
 @Entity
+@Table(name = "info")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "licence")
-public class Licence {
+public class Info {
+
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
 
-    private String key, public_key, name;
+    private String title;
+
+    @ManyToMany(mappedBy = "infos")
+    private List<Main> mains;
 }
