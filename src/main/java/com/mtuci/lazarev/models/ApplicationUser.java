@@ -6,40 +6,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
+@Table(name = "Users")
 public class ApplicationUser {
-
-    public ApplicationUser(
-            String username,
-            String email,
-            String password
-    ) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
-    @Id
     @GeneratedValue
-    private UUID id;
+    @Id
+    private Long id;
 
     @Column(unique = true)
-    private String username;
+    private String login;
 
-    private String password;
+    private String password_hash;
     private String email;
 
-    @OneToOne
-    @MapsId
-    private Licence licence;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
-    @Enumerated(EnumType.STRING)
-    private ApplicationRole role;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "codes")
+    private List<ActivationCode> codes;
+
+    private ApplicationRole applicationRole;
 }

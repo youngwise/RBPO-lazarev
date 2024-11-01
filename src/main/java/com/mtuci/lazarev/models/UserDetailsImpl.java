@@ -32,9 +32,9 @@ public class UserDetailsImpl implements UserDetails {
 
      public static UserDetails fromApplicationUser(ApplicationUser user) {
         return new User(
-                user.getUsername(),
-                user.getPassword(),
-                user.getRole().getGrantedAuthorities()
+                user.getLogin(),
+                user.getPassword_hash(),
+                user.getApplicationRole().getGrantedAuthorities()
         );
      }
 }

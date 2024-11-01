@@ -34,11 +34,11 @@ public class AuthenticationController {
 
             ApplicationUser user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user not found"));
 
-            String token = jwtTokenProvider.createToken(email, user.getRole().getGrantedAuthorities());
+            String token = jwtTokenProvider.createToken(email, user.getApplicationRole().getGrantedAuthorities());
 
             return ResponseEntity.ok(new AuthenticationResponse(email, token));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password_hash");
         }
     }
 }

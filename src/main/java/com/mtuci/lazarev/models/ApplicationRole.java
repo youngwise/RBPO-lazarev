@@ -1,5 +1,6 @@
 package com.mtuci.lazarev.models;
 
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

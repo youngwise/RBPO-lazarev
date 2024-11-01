@@ -47,7 +47,7 @@ public class JwtTokenProvider {
 
     public String createToken(String username, Set<GrantedAuthority> authorities) {
 //        return Jwts.builder()
-////                .claim("username", username)
+////                .claim("login", login)
 ////                .claim("authorities", authorities)
 ////                .setExpiration(new Date(System.currentTimeMillis() + expiration))
 ////                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -79,7 +79,7 @@ public class JwtTokenProvider {
 
     public String getUsername(String token) {
 
-//        return (String) extractAllClaims(token).get("username");
+//        return (String) extractAllClaims(token).get("login");
         return Jwts.parser()
                 .setSigningKey(getSigningKey())
                 .build()

@@ -2,7 +2,9 @@ package com.mtuci.lazarev.service.impl;
 
 import com.mtuci.lazarev.models.ApplicationRole;
 import com.mtuci.lazarev.models.ApplicationUser;
+import com.mtuci.lazarev.models.Role;
 import com.mtuci.lazarev.models.UserDetailsImpl;
+import com.mtuci.lazarev.repositories.RoleRepository;
 import com.mtuci.lazarev.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,13 +32,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         if (userFromDB.isPresent()) return false;
 
-        user.setRole(ApplicationRole.USER);
+        user.setApplicationRole(ApplicationRole.USER);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
+        user.setPassword_hash(encoder.encode(user.getPassword_hash()));
 
         user.setEmail(user.getEmail());
-        user.setUsername(user.getUsername());
+        user.setLogin(user.getLogin());
 
         userRepository.save(user);
         return true;

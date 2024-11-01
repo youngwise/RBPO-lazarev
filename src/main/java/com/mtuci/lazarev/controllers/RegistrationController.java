@@ -26,9 +26,9 @@ public class RegistrationController {
             @RequestParam String email,
             @RequestParam String password
     ) {
-        ApplicationUser applicationUser = new ApplicationUser(username, email, password);
-        if (!userDetailsService.saveUser(applicationUser))
-            return ResponseEntity.ok("Пользователь уже существует!");
+//        ApplicationUser applicationUser = new ApplicationUser()
+//        if (!userDetailsService.saveUser(applicationUser))
+//            return ResponseEntity.ok("Пользователь уже существует!");
 
         return ResponseEntity.ok("Регистрация прошла успешно!");
     }
