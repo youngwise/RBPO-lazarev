@@ -7,28 +7,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "ActivationCode")
-public class ActivationCode {
+@Table(name = "DeviceLicense")
+public class DeviceLicense {
     @GeneratedValue
     @Id
     private Long id;
-
-    private String code, type;
-    private Integer activeDevices, deviceCount, duration;
-    private Date firstActivationDate;
+    private Date activation_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", nullable = false)
-    private ApplicationUser user;
+    @JoinColumn(name = "device_id", nullable = false)
+    private Device device;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "license_id", nullable = false)
+    private License license;
 }

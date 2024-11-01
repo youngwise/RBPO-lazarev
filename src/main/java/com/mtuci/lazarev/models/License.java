@@ -20,18 +20,20 @@ public class License {
     @GeneratedValue
     private Long id;
 
-    private Date activationDate, endingDate;
+    private Date first_activation_date, ending_date;
     private boolean blocked;
+    private Integer device_count, duration;
+    private String code, description;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id", nullable = false)
     private LicenseType licenseType;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "device_id")
-    private List<Device> device;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "code_id", nullable = false)
-    private ActivationCode activationCode;
+    @JoinColumn(name = "user_id", nullable = false)
+    private ApplicationUser user;
 }

@@ -29,9 +29,5 @@ public class ApplicationUser {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "codes")
-    private List<ActivationCode> codes;
-
     private ApplicationRole applicationRole;
 }

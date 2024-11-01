@@ -20,5 +20,5 @@ public class LicenseType {
     private Long id;
 
     private String name, description;
-    private Integer duration;
+    private Integer default_duration;
 }

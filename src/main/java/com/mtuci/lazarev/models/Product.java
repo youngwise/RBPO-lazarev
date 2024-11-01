@@ -14,9 +14,5 @@ public class Product {
     private Long id;
 
     private String name;
-    private boolean isBlocked;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "codes")
-    private List<ActivationCode> codes;
+    private boolean is_blocked;
 }

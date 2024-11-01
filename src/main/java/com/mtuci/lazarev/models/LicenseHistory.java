@@ -21,6 +21,10 @@ public class LicenseHistory {
     @JoinColumn(name = "linence_id", nullable = false)
     private License license;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private ApplicationUser user;
+
     private String status, description;
-    private Date changeDate;
+    private Date change_date;
 }
