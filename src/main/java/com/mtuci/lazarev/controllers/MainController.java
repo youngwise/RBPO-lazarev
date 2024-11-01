@@ -20,6 +20,6 @@ public class MainController {
     }
 
     @PostMapping("/save")
-    @PreAuthorize("hasAnyAuthority('modification')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void save(@RequestBody Main main) { mainService.save(main); }
 }

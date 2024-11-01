@@ -15,6 +15,17 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "users")
 public class ApplicationUser {
+
+    public ApplicationUser(
+            String username,
+            String email,
+            String password
+    ) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     @Id
     @GeneratedValue
     private UUID id;

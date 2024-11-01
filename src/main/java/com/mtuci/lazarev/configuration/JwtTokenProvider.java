@@ -1,21 +1,28 @@
 package com.mtuci.lazarev.configuration;
 
+import com.mtuci.lazarev.service.impl.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
+
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -39,21 +46,51 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String username, Set<GrantedAuthority> authorities) {
+//        return Jwts.builder()
+////                .claim("username", username)
+////                .claim("authorities", authorities)
+////                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+////                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+////                .compact();
+        Claims claims = (Claims) Jwts.claims().setSubject(username);
+        claims.put("auth", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        Date now = new Date();
+        Date validateTime = new Date(now.getTime() + expiration);
+
         return Jwts.builder()
-                .claim("username", username)
-                .claim("authorities", authorities)
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validateTime)
+                .signWith(getSigningKey())
                 .compact();
+
     }
     public boolean validateToken(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+        try {
+            Jwts.parser()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public String getUsername(String token) {
-        return (String) extractAllClaims(token).get("username");
+
+//        return (String) extractAllClaims(token).get("username");
+        return Jwts.parser()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
-    public Set<GrantedAuthority> getAuthorities(String token) {
-        return (Set<GrantedAuthority>) extractAllClaims(token).get("authorities");
+
+    public Authentication getAuthentication(String token) {
+        String email = getUsername(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

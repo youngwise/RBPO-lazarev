@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.util.UUID;
 
 @Entity
@@ -19,5 +20,7 @@ public class Licence {
     @GeneratedValue
     private UUID id;
 
-    private String key, public_key, name;
+    private String key, name, device_id;
+    private Date date_creation, date_expiration;
+    private boolean status;
 }
