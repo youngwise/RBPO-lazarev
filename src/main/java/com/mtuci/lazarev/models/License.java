@@ -36,4 +36,8 @@ public class License {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private ApplicationUser user;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private ApplicationUser owner;
 }
