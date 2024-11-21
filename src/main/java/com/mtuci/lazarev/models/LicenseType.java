@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,4 +21,7 @@ public class LicenseType {
 
     private String name, description;
     private Integer default_duration;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "licenseType")
+    private List<License> licenses;
 }

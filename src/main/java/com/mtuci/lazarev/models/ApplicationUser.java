@@ -36,4 +36,16 @@ public class ApplicationUser {
     private Role role;
 
     private ApplicationRole applicationRole;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    private List<License> licenses_owner;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<License> licenses_user;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<LicenseHistory> licenseHistories;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Device> devices;
 }

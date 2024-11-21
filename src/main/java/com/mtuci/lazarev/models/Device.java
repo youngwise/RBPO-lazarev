@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -22,4 +24,7 @@ public class Device {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private ApplicationUser user;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "device")
+    private List<DeviceLicense> deviceLicenses;
 }

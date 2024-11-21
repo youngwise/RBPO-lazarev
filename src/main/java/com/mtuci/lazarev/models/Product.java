@@ -15,4 +15,7 @@ public class Product {
 
     private String name;
     private boolean is_blocked;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<License> licenses;
 }
