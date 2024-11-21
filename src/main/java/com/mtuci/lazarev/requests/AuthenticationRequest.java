@@ -1,4 +1,4 @@
-package com.mtuci.lazarev.models;
+package com.mtuci.lazarev.requests;
 
 import lombok.Data;
 

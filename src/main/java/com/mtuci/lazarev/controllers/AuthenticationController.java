@@ -2,7 +2,7 @@ package com.mtuci.lazarev.controllers;
 
 import com.mtuci.lazarev.configuration.JwtTokenProvider;
 import com.mtuci.lazarev.models.ApplicationUser;
-import com.mtuci.lazarev.models.AuthenticationRequest;
+import com.mtuci.lazarev.requests.AuthenticationRequest;
 import com.mtuci.lazarev.models.AuthenticationResponse;
 import com.mtuci.lazarev.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class AuthenticationController {
 
             ApplicationUser user = userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("user not found"));
 
-            String token = jwtTokenProvider.createToken(login, user.getApplicationRole().getGrantedAuthorities());
+            String token = jwtTokenProvider.createToken(login, user.getRole().getGrantedAuthorities());
 
             return ResponseEntity.ok(new AuthenticationResponse(token, login));
         } catch (AuthenticationException e) {

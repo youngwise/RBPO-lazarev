@@ -23,10 +23,6 @@ public class LicenseHistoryServiceImpl implements LicenseHistoryService {
     @Override
     public boolean recordLicenseChange(License license, ApplicationUser owner, String status, String description) {
         LicenseHistory licenseHistory = new LicenseHistory();
-
-        if (!licenseRepository.existsById(license.getId())) return false;
-        if (!userRepository.existsById(owner.getId())) return false;
-
         licenseHistory.setLicense(license);
         licenseHistory.setChange_date(new Date(System.currentTimeMillis()));
         licenseHistory.setUser(owner);
