@@ -1,10 +1,14 @@
 package com.mtuci.lazarev.models;
 
+import com.mtuci.lazarev.configuration.SecurityConfig;
+import com.mtuci.lazarev.repositories.RoleRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -23,6 +27,8 @@ public class ApplicationUser {
     private String login;
 
     private String password_hash;
+
+    @Column(unique = true)
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)

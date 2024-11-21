@@ -23,22 +23,30 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
+/*
+    Формат ввода: json
+    {
+        "login": "login",
+        "password": "password"
+    }
+*/
+
     @PostMapping
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest request) {
         try {
-            String email = request.getEmail();
+            String login = request.getLogin();
 
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(email, request.getPassword())
+                    new UsernamePasswordAuthenticationToken(login, request.getPassword())
             );
 
-            ApplicationUser user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user not found"));
+            ApplicationUser user = userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("user not found"));
 
-            String token = jwtTokenProvider.createToken(email, user.getApplicationRole().getGrantedAuthorities());
+            String token = jwtTokenProvider.createToken(login, user.getApplicationRole().getGrantedAuthorities());
 
-            return ResponseEntity.ok(new AuthenticationResponse(email, token));
+            return ResponseEntity.ok(new AuthenticationResponse(token, login));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password_hash");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login or password");
         }
     }
 }

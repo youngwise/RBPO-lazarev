@@ -3,7 +3,6 @@ package com.mtuci.lazarev.configuration;
 import com.mtuci.lazarev.service.impl.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +34,6 @@ public class JwtTokenProvider {
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(getSigningKey())
-                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -46,13 +44,7 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String username, Set<GrantedAuthority> authorities) {
-//        return Jwts.builder()
-////                .claim("login", login)
-////                .claim("authorities", authorities)
-////                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-////                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-////                .compact();
-        Claims claims = (Claims) Jwts.claims().setSubject(username);
+        Claims claims = Jwts.claims().setSubject(username);
         claims.put("auth", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         Date now = new Date();
         Date validateTime = new Date(now.getTime() + expiration);
@@ -69,7 +61,6 @@ public class JwtTokenProvider {
         try {
             Jwts.parser()
                     .setSigningKey(getSigningKey())
-                    .build()
                     .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
@@ -78,19 +69,16 @@ public class JwtTokenProvider {
     }
 
     public String getUsername(String token) {
-
-//        return (String) extractAllClaims(token).get("login");
         return Jwts.parser()
                 .setSigningKey(getSigningKey())
-                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
 
     public Authentication getAuthentication(String token) {
-        String email = getUsername(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        String login = getUsername(token);
+        UserDetails user = userDetailsService.loadUserByUsername(login);
+        return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
 }
