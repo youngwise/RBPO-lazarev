@@ -2,9 +2,9 @@ package com.mtuci.lazarev.controllers;
 
 import com.mtuci.lazarev.configuration.JwtTokenProvider;
 import com.mtuci.lazarev.models.ApplicationUser;
-import com.mtuci.lazarev.requests.AuthenticationRequest;
 import com.mtuci.lazarev.models.AuthenticationResponse;
 import com.mtuci.lazarev.repositories.UserRepository;
+import com.mtuci.lazarev.requests.AuthenticationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth/login")

@@ -1,6 +1,5 @@
 package com.mtuci.lazarev.service.impl;
 
-import com.mtuci.lazarev.configuration.JwtTokenProvider;
 import com.mtuci.lazarev.exceptions.categories.License.LicenseErrorActivationException;
 import com.mtuci.lazarev.exceptions.categories.License.LicenseNotFoundException;
 import com.mtuci.lazarev.exceptions.categories.LicenseTypeNotFoundException;
@@ -11,7 +10,6 @@ import com.mtuci.lazarev.repositories.DeviceLicenseRepository;
 import com.mtuci.lazarev.repositories.LicenseRepository;
 import com.mtuci.lazarev.service.LicenseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +28,6 @@ public class LicenseServiceImpl implements LicenseService {
     private final LicenseTypeServiceImpl licenseTypeService;
     private final LicenseHistoryServiceImpl licenseHistoryService;
     private final DeviceLicenseRepository deviceLicenseRepository;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public License createLicense(
@@ -96,12 +93,16 @@ public class LicenseServiceImpl implements LicenseService {
         );
 
         if (!validateLicense(license, device, user))
+        {
+            licenseHistoryService.recordLicenseChange(license, user, LicenseHistoryStatus.ACTIVATE.name(), "Активация лицензии невозможна");
             throw new LicenseErrorActivationException("Активация невозможна");
+        }
+
         license.setUser(user);
 
         createDeviceLicense(license, device);
         updateLicense(license);
-        licenseHistoryService.recordLicenseChange(license, user, LicenseHistoryStatus.ACTIVATE.name(), license.getDescription());
+        licenseHistoryService.recordLicenseChange(license, user, LicenseHistoryStatus.ACTIVATE.name(), "Лицензия успешно активирована");
         return generateTicket(license, device);
     }
 
@@ -151,6 +152,7 @@ public class LicenseServiceImpl implements LicenseService {
                 )
         );
 
+        licenseHistoryService.recordLicenseChange(license, license.getUser(), LicenseHistoryStatus.MODIFICATION.name(), license.getDescription());
         licenseRepository.save(license);
     }
 
@@ -183,6 +185,7 @@ public class LicenseServiceImpl implements LicenseService {
         ticket.setUserID(license.getUser().getId());
         ticket.setDeviceID(device.getId());
         ticket.setBlockedLicence(license.isBlocked());
+        ticket.setDescription("Генарция токена");
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String ds = bCryptPasswordEncoder.encode(
@@ -194,6 +197,35 @@ public class LicenseServiceImpl implements LicenseService {
         return ticket;
     }
 
+    @Override
+    public List<Ticket> licenseRenewal(String activationCode, ApplicationUser user) {
+        // Проверка ключа лицензии
+        License license = licenseRepository.findByCode(activationCode).orElseThrow(
+                () -> new LicenseNotFoundException("Ключ лицензии недействителен")
+        );
+
+        List<Ticket> tickets = license.getDeviceLicenses().stream()
+                .map(deviceLicense -> generateTicket(license, deviceLicense.getDevice())).toList();
+        // Проверка возможности продления
+        if (license.isBlocked() || license.getEnding_date().before(new Date(System.currentTimeMillis())))
+        {
+            tickets.forEach(ticket -> {
+                ticket.setDescription("Невозможно продлить лицензию");
+                licenseHistoryService.recordLicenseChange(license, user, LicenseHistoryStatus.MODIFICATION.name(), ticket.getDescription());
+            });
+            return tickets;
+        }
+
+        // Продление на год
+        license.setDuration(license.getDuration() + 31536000);
+        license.setEnding_date(new Date(license.getEnding_date().getTime()/1000 + 31536000));
+
+        tickets.forEach(ticket -> {
+            ticket.setDescription("Лицензия успешно продлена");
+            licenseHistoryService.recordLicenseChange(license, user, LicenseHistoryStatus.MODIFICATION.name(), ticket.getDescription());
+        });
+        return tickets;
+    }
 
     @Override
     public Optional<License> findById(Long id) {

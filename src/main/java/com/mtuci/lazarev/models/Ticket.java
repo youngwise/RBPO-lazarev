@@ -11,4 +11,5 @@ public class Ticket {
     private Long userID, deviceID;
     private boolean isBlockedLicence;
     private String digitalSignature;
+    private String description;
 }
