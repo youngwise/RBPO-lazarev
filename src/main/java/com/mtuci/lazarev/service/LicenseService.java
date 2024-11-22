@@ -5,6 +5,7 @@ import com.mtuci.lazarev.models.Device;
 import com.mtuci.lazarev.models.License;
 import com.mtuci.lazarev.models.Ticket;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LicenseService {
@@ -14,11 +15,13 @@ public interface LicenseService {
             );
 
     Ticket activateLicense(String activationCode, Device device, ApplicationUser user);
+    Ticket generateTicket(License license, Device device);
 
     boolean validateLicense(License license, Device device, ApplicationUser user);
     void createDeviceLicense(License license, Device device);
     void updateLicense(License license);
-    Ticket generateTicket(License license, Device device);
+
+    List<License> getActiveLicensesForDevice(Device device, ApplicationUser user);
 
     Optional<License> findById(Long id);
 }

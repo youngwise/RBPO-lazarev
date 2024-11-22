@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -151,6 +152,25 @@ public class LicenseServiceImpl implements LicenseService {
         );
 
         licenseRepository.save(license);
+    }
+
+    @Override
+    public List<License> getActiveLicensesForDevice(Device device, ApplicationUser user) {
+        /*
+        ======================================================================
+        лицензия активна если:
+            - лицензция не заблокирована
+            - лицензиию имеет текущий пользователь
+            - срок действия лицензии не истёк
+        ======================================================================
+        */
+        return device.getDeviceLicenses().stream()
+                .map(DeviceLicense::getLicense)
+                .filter(license ->
+                        license.getUser().equals(user) &&
+                        !license.isBlocked() &&
+                        license.getEnding_date().before(new Date(System.currentTimeMillis()))
+                ).toList();
     }
 
     @Override

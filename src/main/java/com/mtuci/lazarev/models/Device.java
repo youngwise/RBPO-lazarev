@@ -19,7 +19,7 @@ public class Device {
     @Id
     private Long id;
 
-    private String name, mac_address;
+    private String name, macAddress;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

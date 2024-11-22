@@ -35,22 +35,22 @@ public class ActivationController {
             );
 
             // Получить устройство
-            Device device = deviceService.registerOrUpdateDevice(deviceRequest.getName(), deviceRequest.getMac_address(), user);
+            Device device = deviceService.registerOrUpdateDevice(deviceRequest.getName(), deviceRequest.getMacAddress(), user);
 
             Ticket ticket = licenseService.activateLicense(deviceRequest.getActivationCode(), device, user);
 
-            Format formatter = new SimpleDateFormat("dd.MM.yyyy");
-            String answer = "Билет активации лицензии:\n" +
-                    String.format("\tТекущая дата: %s\n", formatter.format(ticket.getNowDate())) +
-                    String.format("\tДата активации: %s\n", formatter.format(ticket.getActivationDate())) +
-                    String.format("\tДата окончания: %s\n", formatter.format(ticket.getExpirationDate())) +
-                    String.format("\tСрок действия билета: %d с\n", ticket.getExpiration()) +
-                    String.format("\tID пользователя: %d\n", ticket.getUserID()) +
-                    String.format("\tID устройства: %d\n", ticket.getDeviceID()) +
-                    String.format("\tСостояние лицензии: %s\n", ticket.isBlockedLicence() ? "заблокирована" : "активна") +
-                    String.format("\tПодпись: %s\n", ticket.getDigitalSignature());
+//            Format formatter = new SimpleDateFormat("dd.MM.yyyy");
+//            String answer = "Билет активации лицензии:\n" +
+//                    String.format("\tТекущая дата: %s\n", formatter.format(ticket.getNowDate())) +
+//                    String.format("\tДата активации: %s\n", formatter.format(ticket.getActivationDate())) +
+//                    String.format("\tДата окончания: %s\n", formatter.format(ticket.getExpirationDate())) +
+//                    String.format("\tСрок действия билета: %d с\n", ticket.getExpiration()) +
+//                    String.format("\tID пользователя: %d\n", ticket.getUserID()) +
+//                    String.format("\tID устройства: %d\n", ticket.getDeviceID()) +
+//                    String.format("\tСостояние лицензии: %s\n", ticket.isBlockedLicence() ? "заблокирована" : "активна") +
+//                    String.format("\tПодпись: %s\n", ticket.getDigitalSignature());
 
-            return ResponseEntity.ok(answer);
+            return ResponseEntity.ok(ticket);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(String.format("Ошибка(%s)", e.getMessage()));
         }

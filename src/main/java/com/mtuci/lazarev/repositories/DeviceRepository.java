@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface DeviceRepository extends JpaRepository<Device, Long> {
     Optional<Device> findByUser(ApplicationUser user);
+    Optional<Device> findByNameAndMacAddress(String name, String mac_address);
 }
