@@ -22,29 +22,33 @@ public class License {
 
     private Date first_activation_date, ending_date;
     private boolean blocked;
-    private Integer device_count, duration;
-    private String code, description;
+    private Integer device_count;
+    private Long duration;
+    private String code;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(length = 500)
+    private String description;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "type_id")
     private LicenseType licenseType;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private ApplicationUser user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "owner_id")
     private ApplicationUser owner;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "license")
     private List<LicenseHistory> licenseHistories;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "license")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "license")
     private List<DeviceLicense> deviceLicenses;
 
 }

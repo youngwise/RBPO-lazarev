@@ -1,6 +1,7 @@
 package com.mtuci.lazarev.controllers;
 
 import com.mtuci.lazarev.models.License;
+import com.mtuci.lazarev.requests.DataLicenseRequest;
 import com.mtuci.lazarev.requests.LicenseCreateRequest;
 import com.mtuci.lazarev.service.impl.LicenseServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,20 @@ public class LicenseCreateController {
                     licenseCreateRequest.getDevice_count(),
                     licenseCreateRequest.getDuration());
 
-            return ResponseEntity.ok(license);
+            return ResponseEntity.ok(new DataLicenseRequest(
+                    license.getId(),
+                    license.getLicenseType().getId(),
+                    license.getProduct().getId(),
+                    null,
+                    license.getOwner().getId(),
+                    license.getFirst_activation_date(),
+                    license.getEnding_date(),
+                    license.isBlocked(),
+                    license.getDevice_count(),
+                    license.getDuration(),
+                    license.getCode(),
+                    license.getDescription()
+            ));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(String.format("Ошибка(%s)", e.getMessage()));
         }

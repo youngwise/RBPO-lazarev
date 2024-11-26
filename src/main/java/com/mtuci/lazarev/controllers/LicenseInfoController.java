@@ -8,7 +8,6 @@ import com.mtuci.lazarev.models.Device;
 import com.mtuci.lazarev.models.License;
 import com.mtuci.lazarev.models.Ticket;
 import com.mtuci.lazarev.requests.DeviceInfoRequest;
-import com.mtuci.lazarev.service.impl.AuthenticationServiceImpl;
 import com.mtuci.lazarev.service.impl.DeviceServiceImpl;
 import com.mtuci.lazarev.service.impl.LicenseServiceImpl;
 import com.mtuci.lazarev.service.impl.UserServiceImpl;
@@ -37,20 +36,16 @@ public class LicenseInfoController {
             );
 
             // Получить устройство
-            Device device = deviceService.findDeviceByInfo(deviceInfoRequest.getName(), deviceInfoRequest.getMacAddress()).orElseThrow(
+            Device device = deviceService.findDeviceByInfo(deviceInfoRequest.getName(), deviceInfoRequest.getMacAddress(), user).orElseThrow(
                     () -> new DeviceNotFoundException("Устройство не найдено")
             );
 
             List<License> licenses = licenseService.getActiveLicensesForDevice(device, user);
-            List<Ticket> tickets = licenses.stream().map(license -> generateTicket(license, device)).toList();
+            List<Ticket> tickets = licenses.stream().map(license -> licenseService.generateTicket(license, device, "Информация о лицензии на текущее устройство")).toList();
 
             return ResponseEntity.ok(tickets);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(String.format("Ошибка(%s)", e.getMessage()));
         }
-    }
-
-    private Ticket generateTicket(License license, Device device) {
-        return licenseService.generateTicket(license, device);
     }
 }

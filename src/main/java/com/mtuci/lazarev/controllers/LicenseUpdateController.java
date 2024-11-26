@@ -34,7 +34,7 @@ public class LicenseUpdateController {
             );
 
             // Аунтентификация пользователя
-            if (authenticationService.authenticate(user, licenseUpdateRequest.getPassword()))
+            if (!authenticationService.authenticate(user, licenseUpdateRequest.getPassword()))
                 throw new AuthenticationErrorException("Аутентификация не удалась");
 
             // запрос на продление

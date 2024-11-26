@@ -9,6 +9,7 @@ public enum LicenseHistoryStatus {
     CREATE("создана"),
     MODIFICATION("изменена"),
     ACTIVATE("активирована"),
+    ERROR("ошибка"),
     EXPIRED("истекла");
 
     private final String status;

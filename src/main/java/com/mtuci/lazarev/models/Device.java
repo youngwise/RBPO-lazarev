@@ -18,13 +18,12 @@ public class Device {
     @GeneratedValue
     @Id
     private Long id;
-
     private String name, macAddress;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", nullable = false)
     private ApplicationUser user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "device")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "device")
     private List<DeviceLicense> deviceLicenses;
 }

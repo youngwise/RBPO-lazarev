@@ -19,14 +19,17 @@ public class LicenseHistory {
     @Id
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "linence_id")
+    private String status;
+
+    @Column(length = 500)
+    private String description;
+    private Date change_date;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "license_id")
     private License license;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private ApplicationUser user;
-
-    private String status, description;
-    private Date change_date;
 }

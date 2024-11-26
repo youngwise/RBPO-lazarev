@@ -19,8 +19,12 @@ public class LicenseType {
     @Id
     private Long id;
 
-    private String name, description;
-    private Integer default_duration;
+    private String name;
+
+    @Column(length = 500)
+    private String description;
+
+    private Long default_duration;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "licenseType")
     private List<License> licenses;
