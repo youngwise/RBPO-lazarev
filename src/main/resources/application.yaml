@@ -14,5 +14,5 @@ spring:
   thymeleaf:
     check-template-location: false
 jwt:
-  secret: LazarevSergeyAleksandro1BIB22141
+  secret: ${SECRET_JAVA}
   expiration: 3600000
