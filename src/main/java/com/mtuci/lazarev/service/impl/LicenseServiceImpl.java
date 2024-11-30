@@ -259,8 +259,13 @@ public class LicenseServiceImpl implements LicenseService {
 
         List<Ticket> tickets = license.getDeviceLicenses().stream()
                 .map(deviceLicense -> generateTicket(license, deviceLicense.getDevice(), "")).toList();
+
         // Проверка возможности продления
-        if (license.isBlocked() || license.getEnding_date().before(new Date(System.currentTimeMillis())))
+        if (
+                license.isBlocked() ||
+                license.getEnding_date().before(new Date(System.currentTimeMillis()))  ||
+                (license.getUser() != null && !license.getUser().getId().equals(user.getId()))
+        )
         {
             tickets.forEach(ticket -> {
                 ticket.setDescription("Невозможно продлить лицензию");

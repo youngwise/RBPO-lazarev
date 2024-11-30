@@ -37,7 +37,7 @@ public class LicenseHistoryController {
                     licenseHistory -> new DataLicenseHistoryRequest(
                             licenseHistory.getId(),
                             licenseHistory.getLicense().getId(),
-                            licenseHistory.getUser().getId(),
+                            licenseHistory.getUser() == null ? null : licenseHistory.getUser().getId(),
                             licenseHistory.getStatus(),
                             licenseHistory.getDescription(),
                             licenseHistory.getChange_date()
