@@ -10,9 +10,16 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
-
   thymeleaf:
     check-template-location: false
+
 jwt:
   secret: ${SECRET_JAVA}
   expiration: 3600000
+server:
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:keystore/baeldung.p12
+    key-store-password: ${SECRET_JAVA}
+    key-alias: baeldung
