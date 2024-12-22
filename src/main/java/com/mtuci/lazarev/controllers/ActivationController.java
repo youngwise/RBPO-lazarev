@@ -10,6 +10,7 @@ import com.mtuci.lazarev.service.impl.DeviceServiceImpl;
 import com.mtuci.lazarev.service.impl.LicenseServiceImpl;
 import com.mtuci.lazarev.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +39,7 @@ public class ActivationController {
 
             return ResponseEntity.ok(ticket);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(String.format("Ошибка(%s)", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(String.format("Ошибка(%s)", e.getMessage()));
         }
     }
 }

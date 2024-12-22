@@ -8,9 +8,11 @@ import java.sql.Date;
 public class Ticket {
     private Date nowDate, activationDate, expirationDate;
     private Long expiration;
-
-    private Long userID, deviceID;
+    private Long userID;
+    private String device;
     private boolean isBlockedLicence;
     private String digitalSignature;
     private String description;
+    private String productName;
+    private String licenseType;
 }

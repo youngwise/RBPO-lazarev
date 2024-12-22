@@ -4,6 +4,7 @@ import com.mtuci.lazarev.models.Product;
 import com.mtuci.lazarev.requests.DataProductRequest;
 import com.mtuci.lazarev.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class ProductController {
             return ResponseEntity.ok(request);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -43,7 +44,7 @@ public class ProductController {
             return ResponseEntity.ok(data);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -54,7 +55,7 @@ public class ProductController {
             return ResponseEntity.ok(request);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -65,7 +66,7 @@ public class ProductController {
             return ResponseEntity.ok("Продукт удалён");
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }

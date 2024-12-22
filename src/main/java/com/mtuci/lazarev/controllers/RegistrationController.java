@@ -4,6 +4,7 @@ import com.mtuci.lazarev.models.ApplicationUser;
 import com.mtuci.lazarev.requests.RegistrationRequest;
 import com.mtuci.lazarev.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class RegistrationController {
         applicationUser.setEmail(registrationRequest.getEmail());
 
         if (!userDetailsService.saveUser(applicationUser, registrationRequest.getPassword()))
-            return ResponseEntity.badRequest().body("Пользователь уже существует!");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Пользователь уже существует!");
 
         return ResponseEntity.ok("Регистрация прошла успешно!");
     }

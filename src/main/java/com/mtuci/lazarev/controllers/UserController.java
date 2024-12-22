@@ -4,6 +4,7 @@ import com.mtuci.lazarev.models.ApplicationUser;
 import com.mtuci.lazarev.requests.DataUserRequest;
 import com.mtuci.lazarev.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class UserController {
             return ResponseEntity.ok(request);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -45,7 +46,7 @@ public class UserController {
             return ResponseEntity.ok(data);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -56,7 +57,7 @@ public class UserController {
             return ResponseEntity.ok(request);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -67,7 +68,7 @@ public class UserController {
             return ResponseEntity.ok("Пользователь удалён");
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }

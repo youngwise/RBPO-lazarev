@@ -1,6 +1,7 @@
 package com.mtuci.lazarev.controllers;
 
 import com.mtuci.lazarev.configuration.JwtTokenProvider;
+import com.mtuci.lazarev.models.ApplicationRole;
 import com.mtuci.lazarev.models.ApplicationUser;
 import com.mtuci.lazarev.models.AuthenticationResponse;
 import com.mtuci.lazarev.repositories.UserRepository;
@@ -43,13 +44,13 @@ public class AuthenticationController {
                     new UsernamePasswordAuthenticationToken(login, request.getPassword())
             );
 
-            ApplicationUser user = userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("user not found"));
+            ApplicationUser user = userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("Пользоваетель не найден!"));
 
             String token = jwtTokenProvider.createToken(login, user.getRole().getGrantedAuthorities());
 
-            return ResponseEntity.ok(new AuthenticationResponse(token, login));
+            return ResponseEntity.ok(new AuthenticationResponse(token, login, user.getRole().equals(ApplicationRole.ADMIN)));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login or password");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Неправильный логин или пароль!");
         }
     }
 }

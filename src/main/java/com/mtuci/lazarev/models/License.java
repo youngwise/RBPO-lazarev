@@ -33,7 +33,7 @@ public class License {
     @JoinColumn(name = "type_id")
     private LicenseType licenseType;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -41,7 +41,7 @@ public class License {
     @JoinColumn(name = "user_id")
     private ApplicationUser user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "owner_id")
     private ApplicationUser owner;
 

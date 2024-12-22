@@ -5,6 +5,7 @@ import com.mtuci.lazarev.requests.DataLicenseRequest;
 import com.mtuci.lazarev.requests.LicenseCreateRequest;
 import com.mtuci.lazarev.service.impl.LicenseServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +45,7 @@ public class LicenseCreateController {
                     license.getDescription()
             ));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(String.format("Ошибка(%s)", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(String.format("Ошибка(%s)", e.getMessage()));
         }
     }
 }

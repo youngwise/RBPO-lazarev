@@ -4,6 +4,7 @@ import com.mtuci.lazarev.models.LicenseHistory;
 import com.mtuci.lazarev.requests.DataLicenseHistoryRequest;
 import com.mtuci.lazarev.service.impl.LicenseHistoryServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class LicenseHistoryController {
             return ResponseEntity.ok(request);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -46,7 +47,7 @@ public class LicenseHistoryController {
             return ResponseEntity.ok(data);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -57,7 +58,7 @@ public class LicenseHistoryController {
             return ResponseEntity.ok(request);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -68,7 +69,7 @@ public class LicenseHistoryController {
             return ResponseEntity.ok("Удалена история лицензии");
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }

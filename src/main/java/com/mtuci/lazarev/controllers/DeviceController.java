@@ -4,6 +4,7 @@ import com.mtuci.lazarev.models.Device;
 import com.mtuci.lazarev.requests.DataDeviceRequest;
 import com.mtuci.lazarev.service.impl.DeviceServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class DeviceController {
             return ResponseEntity.ok(deviceRequest);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -44,7 +45,7 @@ public class DeviceController {
             return ResponseEntity.ok(dataDevices);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -55,7 +56,7 @@ public class DeviceController {
             return ResponseEntity.ok(deviceRequest);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -66,7 +67,7 @@ public class DeviceController {
             return ResponseEntity.ok("Устройство удалено");
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }

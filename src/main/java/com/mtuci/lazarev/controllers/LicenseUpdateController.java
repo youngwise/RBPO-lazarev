@@ -1,15 +1,14 @@
 package com.mtuci.lazarev.controllers;
 
 import com.mtuci.lazarev.configuration.JwtTokenProvider;
-import com.mtuci.lazarev.exceptions.categories.AuthenticationErrorException;
 import com.mtuci.lazarev.exceptions.categories.UserNotFoundException;
 import com.mtuci.lazarev.models.ApplicationUser;
 import com.mtuci.lazarev.models.Ticket;
 import com.mtuci.lazarev.requests.LicenseUpdateRequest;
-import com.mtuci.lazarev.service.impl.AuthenticationServiceImpl;
 import com.mtuci.lazarev.service.impl.LicenseServiceImpl;
 import com.mtuci.lazarev.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +20,6 @@ import java.util.List;
 public class LicenseUpdateController {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserServiceImpl userService;
-    private final AuthenticationServiceImpl authenticationService;
     private final LicenseServiceImpl licenseService;
 
     @PostMapping
@@ -33,16 +31,12 @@ public class LicenseUpdateController {
                     () -> new UserNotFoundException("Пользователь не найден")
             );
 
-            // Аунтентификация пользователя
-            if (!authenticationService.authenticate(user, licenseUpdateRequest.getPassword()))
-                throw new AuthenticationErrorException("Аутентификация не удалась");
-
             // запрос на продление
             List<Ticket> tickets = licenseService.licenseRenewal(licenseUpdateRequest.getCodeActivation(), user);
 
             return ResponseEntity.ok(tickets);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(String.format("Ошибка(%s)", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(String.format("Ошибка(%s)", e.getMessage()));
         }
     }
 }
