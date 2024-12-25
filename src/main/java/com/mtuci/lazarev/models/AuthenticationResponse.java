@@ -9,5 +9,4 @@ import lombok.NoArgsConstructor;
 public class AuthenticationResponse {
     private String token;
     private String login;
-    private Boolean full_access;
 }

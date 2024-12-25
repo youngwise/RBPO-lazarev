@@ -48,7 +48,7 @@ public class AuthenticationController {
 
             String token = jwtTokenProvider.createToken(login, user.getRole().getGrantedAuthorities());
 
-            return ResponseEntity.ok(new AuthenticationResponse(token, login, user.getRole().equals(ApplicationRole.ADMIN)));
+            return ResponseEntity.ok(new AuthenticationResponse(token, login));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Неправильный логин или пароль!");
         }

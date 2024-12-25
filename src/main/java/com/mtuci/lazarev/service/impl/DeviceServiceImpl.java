@@ -71,6 +71,11 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    public List<Device> getAllByUser(ApplicationUser user) {
+        return deviceRepository.findAllByUser(user);
+    }
+
+    @Override
     public List<Device> getAll() {
         return deviceRepository.findAll();
     }

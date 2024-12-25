@@ -15,6 +15,8 @@ public interface DeviceService {
     // save
     Device save(DataDeviceRequest deviceRequest);
 
+    List<Device> getAllByUser(ApplicationUser user);
+
     // read
     List<Device> getAll();
 

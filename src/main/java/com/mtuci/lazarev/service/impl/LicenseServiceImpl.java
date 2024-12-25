@@ -1,6 +1,5 @@
 package com.mtuci.lazarev.service.impl;
 
-import com.google.gson.Gson;
 import com.mtuci.lazarev.exceptions.categories.License.LicenseErrorActivationException;
 import com.mtuci.lazarev.exceptions.categories.License.LicenseNotFoundException;
 import com.mtuci.lazarev.exceptions.categories.LicenseTypeNotFoundException;
@@ -234,19 +233,14 @@ public class LicenseServiceImpl implements LicenseService {
 
     @Override
     public Ticket generateTicket(License license, Device device, String description) {
-        Gson gson = new Gson();
-        record DeviceImpl(Long id, String name, String macAddress){}
-        DeviceImpl deviceimpl = new DeviceImpl(device.getId(), device.getName(), device.getMacAddress());
-
-        String json = gson.toJson(deviceimpl);
-
         Ticket ticket = new Ticket();
         ticket.setNowDate(new Date(System.currentTimeMillis()));
         ticket.setActivationDate(license.getFirst_activation_date());
         ticket.setExpirationDate(license.getEnding_date());
         ticket.setExpiration(license.getDuration());
         ticket.setUserID(license.getUser() == null ? license.getOwner().getId() : license.getUser().getId());
-        ticket.setDevice(json);
+        ticket.setDeviceID(device.getId());
+        ticket.setLicenseID(license.getId());
         ticket.setBlockedLicence(license.isBlocked());
         ticket.setDescription(description);
         ticket.setProductName(license.getProduct().getName());
@@ -256,7 +250,7 @@ public class LicenseServiceImpl implements LicenseService {
         String ds = bCryptPasswordEncoder.encode(
                 ticket.getNowDate().toString() + ticket.getActivationDate().toString() +
                         ticket.getExpirationDate().toString() + ticket.getExpiration().toString() +
-                        ticket.getUserID().toString() + ticket.getDevice()
+                        ticket.getUserID().toString() + ticket.getDeviceID()
         );
         ticket.setDigitalSignature(ds);
         return ticket;

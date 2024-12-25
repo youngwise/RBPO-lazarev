@@ -9,7 +9,8 @@ public class Ticket {
     private Date nowDate, activationDate, expirationDate;
     private Long expiration;
     private Long userID;
-    private String device;
+    private Long deviceID;
+    private Long LicenseID;
     private boolean isBlockedLicence;
     private String digitalSignature;
     private String description;
