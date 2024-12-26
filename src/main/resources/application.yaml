@@ -23,3 +23,5 @@ server:
     key-store: classpath:keystore/baeldung.p12
     key-store-password: ${SECRET_JAVA}
     key-alias: baeldung
+  tomcat:
+    keep-alive-timeout: 0xffffffff

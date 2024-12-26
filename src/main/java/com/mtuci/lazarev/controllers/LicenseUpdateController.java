@@ -32,9 +32,9 @@ public class LicenseUpdateController {
             );
 
             // запрос на продление
-            List<Ticket> tickets = licenseService.licenseRenewal(licenseUpdateRequest.getCodeActivation(), user);
+            Ticket ticket = licenseService.licenseRenewal(licenseUpdateRequest.getCodeActivation(), user);
 
-            return ResponseEntity.ok(tickets);
+            return ResponseEntity.ok(ticket);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(String.format("Ошибка(%s)", e.getMessage()));
         }

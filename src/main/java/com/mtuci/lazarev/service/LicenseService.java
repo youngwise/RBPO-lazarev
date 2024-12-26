@@ -16,7 +16,7 @@ public interface LicenseService {
 
     Ticket activateLicense(String activationCode, Device device, ApplicationUser user);
     Ticket generateTicket(License license, Device device, String description);
-    List<Ticket> licenseRenewal(String activationCode, ApplicationUser user);
+    Ticket licenseRenewal(String activationCode, ApplicationUser user);
 
     boolean validateLicense(License license, Device device, ApplicationUser user);
     void createDeviceLicense(License license, Device device);

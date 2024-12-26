@@ -257,14 +257,11 @@ public class LicenseServiceImpl implements LicenseService {
     }
 
     @Override
-    public List<Ticket> licenseRenewal(String activationCode, ApplicationUser user) {
+    public Ticket licenseRenewal(String activationCode, ApplicationUser user) {
         // Проверка ключа лицензии
         License license = licenseRepository.findByCode(activationCode).orElseThrow(
                 () -> new LicenseNotFoundException("Ключ лицензии недействителен")
         );
-
-        List<Ticket> tickets = license.getDeviceLicenses().stream()
-                .map(deviceLicense -> generateTicket(license, deviceLicense.getDevice(), "")).toList();
 
         if ((license.getUser() != null && !license.getUser().getId().equals(user.getId())) || (license.getUser() == null && !license.getOwner().getId().equals(user.getId())) ||
             license.isBlocked() || license.getFirst_activation_date() == null ||
@@ -277,11 +274,11 @@ public class LicenseServiceImpl implements LicenseService {
         license.setDuration(license.getLicenseType().getDefault_duration());
         license.setEnding_date(new Date(System.currentTimeMillis() + license.getDuration()*1000));
 
-        tickets.forEach(ticket -> {
-            ticket.setDescription("Лицензия успешно продлена");
-            licenseHistoryService.recordLicenseChange(license, user, LicenseHistoryStatus.MODIFICATION.name(), ticket.getDescription());
-        });
-        return tickets;
+        //        tickets.forEach(ticket -> {
+//            ticket.setDescription("Лицензия успешно продлена");
+//            licenseHistoryService.recordLicenseChange(license, user, LicenseHistoryStatus.MODIFICATION.name(), ticket.getDescription());
+//        });
+        return generateTicket(license, license.getDeviceLicenses().getFirst().getDevice(), "Лицензия успешно продлена");
     }
 
     private String generateCodeLicense(Long productId, Long ownerId, Long licenseTypeId, Integer device_count) {
