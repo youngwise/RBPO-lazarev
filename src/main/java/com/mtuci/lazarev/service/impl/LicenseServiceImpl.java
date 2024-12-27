@@ -66,7 +66,7 @@ public class LicenseServiceImpl implements LicenseService {
         license.setDuration(duration);
 
         // Расчёт даты окончания
-        Date endDate = new Date(System.currentTimeMillis() + duration*1000);
+        Date endDate = new Date(System.currentTimeMillis() + duration*86400000);
         license.setEnding_date(endDate);
 
         StringBuilder description = new StringBuilder();
@@ -272,7 +272,7 @@ public class LicenseServiceImpl implements LicenseService {
 
         // Продление на срок по умолчанию
         license.setDuration(license.getLicenseType().getDefault_duration());
-        license.setEnding_date(new Date(System.currentTimeMillis() + license.getDuration()*1000));
+        license.setEnding_date(new Date(System.currentTimeMillis() + license.getDuration()*86400000));
 
         licenseRepository.save(license);
 
